@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Facebook Message Sender</title>
+</head>
+<body>
+  <h1>Facebook Message Sender</h1>
+  <form id="messageForm">
+    <label for="cookies">Cookies (JSON):</label><br>
+    <textarea id="cookies" name="cookies" rows="10" cols="50" required></textarea><br><br>
+
+    <label for="friendIds">Friend IDs (comma-separated):</label><br>
+    <textarea id="friendIds" name="friendIds" rows="5" cols="50" required></textarea><br><br>
+
+    <label for="message">Message:</label><br>
+    <textarea id="message" name="message" rows="5" cols="50" required></textarea><br><br>
+
+    <button type="submit">Send Messages</button>
+  </form>
+
+  <script>
+    document.getElementById('messageForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const cookies = JSON.parse(document.getElementById('cookies').value);
+      const friendIds = document.getElementById('friendIds').value;
+      const message = document.getElementById('message').value;
+
+      const response = await fetch('/send-messages', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ cookies, friendIds, message })
+      });
+
+      const result = await response.text();
+      alert(result);
+    });
+  </script>
+</body>
+</html>
